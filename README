@@ -1,0 +1,14 @@
+LastByteDistribution is a tool to extract the time to last byte distribution per object size class.
+
+Usage:
+java -jar LastByteDistribution.jar <file.csv>
+The outcome is a file_dist.png file.
+
+Compilation:
+mvn package
+
+The result jar is produced in the target directory, e.g. target/lbdist-1.0-SNAPSHOT.jar
+
+An example:
+java -jar target/lbdist-1.0-SNAPSHOT.jar src/test/resources/testFile.csv
+output: testFile_dist.png
