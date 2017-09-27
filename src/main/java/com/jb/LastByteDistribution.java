@@ -15,7 +15,7 @@ public class LastByteDistribution {
         Path path = FileSystems.getDefault().getPath(args[0]);
         LastByteDistributionProcessor processor = new LastByteDistributionProcessor(path);
         try {
-            Map<LBClass, Map<Long, Long>> statistics = processor.calculateStatistics(processor.parse());
+            Map<LBClass, Map<Long, Double>> statistics = processor.calculateStatistics(processor.parse());
             File chart = LBChartCreator.createXYChart(statistics, path.getFileName().toString().replace(".csv", ".png"));
 
             System.out.println("created file " + chart.getPath());

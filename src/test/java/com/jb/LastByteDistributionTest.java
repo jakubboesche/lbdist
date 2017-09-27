@@ -8,8 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static com.jb.LBClass.BETWEEN100kBAND1MB;
 
@@ -45,10 +46,10 @@ public class LastByteDistributionTest
         //given
         LastByteDistributionProcessor processor = new LastByteDistributionProcessor(path);
         //when
-        Stream<LBEntry> outputDistribution = processor.parse();
+        List<LBEntry> outputDistribution = processor.parse();
         //then
         //200,600000,2,2048,123.456,5
-        LBEntry lbEntry = outputDistribution.findFirst().get();
+        LBEntry lbEntry = outputDistribution.get(0);
         assertEquals(2 + 2048 + 5, lbEntry.getTtlb());
         assertEquals(BETWEEN100kBAND1MB, lbEntry.getLbClass());
     }
@@ -57,27 +58,31 @@ public class LastByteDistributionTest
         //given
         LastByteDistributionProcessor processor = new LastByteDistributionProcessor(path);
         //when
-        Stream<LBEntry> entries = processor.parse();
+        List<LBEntry> entries = processor.parse();
         //then
         assertTrue(entries != null);
-        assertEquals(10, entries.count());
+        assertEquals(10, entries.size());
     }
 
-    public void testShouldRunProcessor() throws IOException {
+    public void testShouldCalculateStatistics() throws IOException {
         //given
         LastByteDistributionProcessor processor = new LastByteDistributionProcessor(path);
         //when
-        Stream<ProcessedLBEntry> outputDistribution = processor.process(processor.parse());
+        Map<LBClass, Map<Long, Double>> statistics = processor.calculateStatistics(processor.parse());
         //then
-        assertTrue(outputDistribution != null);
-        assertTrue(outputDistribution.count() > 0);
+        assertTrue(statistics != null);
+        assertEquals(2, statistics.keySet().size());
+        double sum = statistics.values().stream()
+                .map(Map::values).flatMap(Collection::stream)
+                .mapToDouble(percentage -> percentage).sum();
+        assertEquals(100.0, sum);
     }
 
     public void testShouldCreateXYChart() throws IOException {
         //given
         LastByteDistributionProcessor processor = new LastByteDistributionProcessor(path);
         //when
-        Map<LBClass, Map<Long, Long>> statistics = processor.calculateStatistics(processor.parse());
+        Map<LBClass, Map<Long, Double>> statistics = processor.calculateStatistics(processor.parse());
         File chart = LBChartCreator.createXYChart(statistics, "testFile.png");
         //then
         assertTrue(chart != null);

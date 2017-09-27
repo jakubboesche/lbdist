@@ -19,7 +19,7 @@ public class LBChartCreator {
     public static final String X_AXIS_LABEL = "TTLB in ms (logarithmic scale base 2)";
     public static final String Y_AXIS_LABEL = "% of TTLB times in sample";
 
-    public static File createXYChart(Map<LBClass, Map<Long, Long>> distribution, String fileName) throws IOException {
+    public static File createXYChart(Map<LBClass, Map<Long, Double>> distribution, String fileName) throws IOException {
         IntervalXYDataset dataset = getIntervalXYDataset(distribution);
         JFreeChart xyBarChart = ChartFactory.createXYBarChart("Time to last byte distribution per object size class",
                 X_AXIS_LABEL,
@@ -41,7 +41,7 @@ public class LBChartCreator {
         return file;
     }
 
-    public static IntervalXYDataset getIntervalXYDataset(Map<LBClass, Map<Long, Long>> distribution) {
+    public static IntervalXYDataset getIntervalXYDataset(Map<LBClass, Map<Long, Double>> distribution) {
         XYSeriesCollection dataset = new XYSeriesCollection();
         distribution.forEach((lbClass, ttlbToCount) -> {
             XYSeries series = new XYSeries(lbClass.getDescription());
