@@ -16,8 +16,4 @@ public class LBEntry {
     public LBClass getLbClass() {
         return lbClass;
     }
-
-    public int getTtlbLog2() {
-        return 64 - Long.numberOfLeadingZeros(ttlb);
-    }
 }

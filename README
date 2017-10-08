@@ -7,8 +7,8 @@ The outcome is a file_dist.png file.
 Compilation:
 mvn package
 
-The result jar is produced in the target directory, e.g. target/lbdist-1.0-SNAPSHOT.jar
+The result jar is produced in the target directory, e.g. target/lbdist-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 An example:
-java -jar target/lbdist-1.0-SNAPSHOT.jar src/test/resources/testFile.csv
+java -jar target/lbdist-1.0-SNAPSHOT-jar-with-dependencies.jar src/test/resources/testFile.csv
 output: testFile_dist.png
