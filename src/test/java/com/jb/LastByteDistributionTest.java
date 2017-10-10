@@ -37,14 +37,14 @@ public class LastByteDistributionTest
     public void testShouldConstructLastByteDistributionProcessor() {
         //given
         //when
-        LastByteDistributionProcessor processor = new LastByteDistributionProcessor(path);
+        LastByteDistributionProcessor processor = new LastByteDistributionFileProcessor(path);
         //then
         assertTrue(processor != null);
     }
 
     public void testShouldParseRow() throws IOException {
         //given
-        LastByteDistributionProcessor processor = new LastByteDistributionProcessor(path);
+        LastByteDistributionFileProcessor processor = new LastByteDistributionFileProcessor(path);
         //when
         List<LBEntry> outputDistribution = processor.parse();
         //then
@@ -56,7 +56,7 @@ public class LastByteDistributionTest
 
     public void testShouldRunParser() throws IOException {
         //given
-        LastByteDistributionProcessor processor = new LastByteDistributionProcessor(path);
+        LastByteDistributionFileProcessor processor = new LastByteDistributionFileProcessor(path);
         //when
         List<LBEntry> entries = processor.parse();
         //then
@@ -66,7 +66,7 @@ public class LastByteDistributionTest
 
     public void testShouldCalculateStatistics() throws IOException {
         //given
-        LastByteDistributionProcessor processor = new LastByteDistributionProcessor(path);
+        LastByteDistributionFileProcessor processor = new LastByteDistributionFileProcessor(path);
         //when
         Map<LBClass, Map<Long, Double>> statistics = processor.calculateStatistics(processor.parse());
         //then
@@ -80,10 +80,10 @@ public class LastByteDistributionTest
 
     public void testShouldCreateXYChart() throws IOException {
         //given
-        LastByteDistributionProcessor processor = new LastByteDistributionProcessor(path);
+        LastByteDistributionFileProcessor processor = new LastByteDistributionFileProcessor(path);
         //when
         Map<LBClass, Map<Long, Double>> statistics = processor.calculateStatistics(processor.parse());
-        File chart = LBChartCreator.createXYChart(statistics, "testFile.png");
+        File chart = LBChartCreator.createChartFile(statistics, "testFile.png");
         //then
         assertTrue(chart != null);
     }
