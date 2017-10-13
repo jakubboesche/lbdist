@@ -26,6 +26,9 @@ public class LastByteDistributionProcessor {
     }
 
     private LBEntry mapToLBEntry(String[] strings) {
+        if (strings.length < 6) {
+            throw new InvalidFileFormatException("missing column");
+        }
 //        http_status,obj_sz,req_time,transfer_time,ts,turn_time
         long objSize = Long.valueOf(strings[1]);
         long reqTime = Long.valueOf(strings[2]);

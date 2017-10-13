@@ -17,6 +17,7 @@ import static com.jb.LBClass.BETWEEN100kBAND1MB;
 public class LastByteDistributionTest
         extends TestCase {
     private static final String INPUT_FILE_NAME = "src/test/resources/testFile.csv";
+    private static final String INPUT_FILE_NAME_INVALID = "src/test/resources/testFile_missing_column.csv";
     private Path path;
 
     public LastByteDistributionTest(String testName) {
@@ -52,6 +53,20 @@ public class LastByteDistributionTest
         LBEntry lbEntry = outputDistribution.get(0);
         assertEquals(2 + 2048 + 5, lbEntry.getTtlb());
         assertEquals(BETWEEN100kBAND1MB, lbEntry.getLbClass());
+    }
+
+    public void testShouldThrowExceptionParsingInvalidRow() throws IOException {
+        //given
+        Path invalidFilePath = FileSystems.getDefault().getPath(INPUT_FILE_NAME_INVALID);
+        LastByteDistributionFileProcessor processor = new LastByteDistributionFileProcessor(invalidFilePath);
+        //when
+        try {
+            List<LBEntry> outputDistribution = processor.parse();
+            fail();
+        } catch (InvalidFileFormatException e) {
+            //then
+            // OK
+        }
     }
 
     public void testShouldRunParser() throws IOException {
