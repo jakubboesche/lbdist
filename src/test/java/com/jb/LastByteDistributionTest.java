@@ -4,6 +4,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -93,7 +94,7 @@ public class LastByteDistributionTest
         assertEquals(100.0, sum);
     }
 
-    public void testShouldCreateXYChart() throws IOException {
+    public void testShouldCreateXYChartFile() throws IOException {
         //given
         LastByteDistributionFileProcessor processor = new LastByteDistributionFileProcessor(path);
         //when
@@ -101,5 +102,16 @@ public class LastByteDistributionTest
         File chart = LBChartCreator.createChartFile(statistics, "testFile.png");
         //then
         assertTrue(chart != null);
+    }
+
+    public void testShouldCreateXYChartByteStream() throws IOException {
+        //given
+        LastByteDistributionFileProcessor processor = new LastByteDistributionFileProcessor(path);
+        //when
+        Map<LBClass, Map<Long, Double>> statistics = processor.calculateStatistics(processor.parse());
+        ByteArrayOutputStream chartStream = LBChartCreator.createChartStream(statistics);
+        //then
+        assertTrue(chartStream != null);
+        assertTrue(chartStream.size() > 0);
     }
 }
