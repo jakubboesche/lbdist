@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.jb.LBClass.BETWEEN100kBAND1MB;
+import static com.jb.LBClass.LESSTHAN100kB;
 
 public class LastByteDistributionTest
         extends TestCase {
@@ -92,6 +93,14 @@ public class LastByteDistributionTest
                 .map(Map::values).flatMap(Collection::stream)
                 .mapToDouble(percentage -> percentage).sum();
         assertEquals(100.0, sum);
+        assertEquals(10.0, statistics.get(LESSTHAN100kB).get(1L));
+        assertEquals(20.0, statistics.get(LESSTHAN100kB).get(6L));
+        assertEquals(10.0, statistics.get(LESSTHAN100kB).get(41L));
+        assertEquals(10.0, statistics.get(LESSTHAN100kB).get(61L));
+        assertEquals(10.0, statistics.get(BETWEEN100kBAND1MB).get(769L));
+        assertEquals(10.0, statistics.get(BETWEEN100kBAND1MB).get(2055L));
+        assertEquals(20.0, statistics.get(BETWEEN100kBAND1MB).get(7931L));
+        assertEquals(10.0, statistics.get(BETWEEN100kBAND1MB).get(30229L));
     }
 
     public void testShouldCreateXYChartFile() throws IOException {

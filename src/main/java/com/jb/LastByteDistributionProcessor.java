@@ -2,7 +2,6 @@ package com.jb;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
@@ -20,7 +19,7 @@ public class LastByteDistributionProcessor {
                 groupingBy(LBEntry::getLbClass,
                         groupingBy(LBEntry::getTtlb,
                                 collectingAndThen(
-                                        Collectors.counting(),
+                                        counting(),
                                         count -> count * 100.0 / entries.size()
                                 ))));
     }
@@ -30,10 +29,10 @@ public class LastByteDistributionProcessor {
             throw new InvalidFileFormatException("missing column");
         }
 //        http_status,obj_sz,req_time,transfer_time,ts,turn_time
-        long objSize = Long.valueOf(strings[1]);
-        long reqTime = Long.valueOf(strings[2]);
-        long transferTime = Long.valueOf(strings[3]);
-        long turnaroundTime = Long.valueOf(strings[5]);
+        long objSize = Long.parseLong(strings[1]);
+        long reqTime = Long.parseLong(strings[2]);
+        long transferTime = Long.parseLong(strings[3]);
+        long turnaroundTime = Long.parseLong(strings[5]);
 
         long ttlb = reqTime + transferTime + turnaroundTime;
 

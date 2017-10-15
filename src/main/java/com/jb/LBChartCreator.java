@@ -33,7 +33,7 @@ public class LBChartCreator {
         return out;
     }
 
-    public static JFreeChart getChart(Map<LBClass, Map<Long, Double>> distribution) {
+    private static JFreeChart getChart(Map<LBClass, Map<Long, Double>> distribution) {
         IntervalXYDataset dataset = getIntervalXYDataset(distribution);
         JFreeChart xyBarChart = ChartFactory.createXYBarChart("Time to last byte distribution per object size class",
                 X_AXIS_LABEL,
@@ -53,7 +53,7 @@ public class LBChartCreator {
         return xyBarChart;
     }
 
-    public static IntervalXYDataset getIntervalXYDataset(Map<LBClass, Map<Long, Double>> distribution) {
+    private static IntervalXYDataset getIntervalXYDataset(Map<LBClass, Map<Long, Double>> distribution) {
         XYSeriesCollection dataset = new XYSeriesCollection();
         distribution.forEach((lbClass, ttlbToCount) -> {
             XYSeries series = new XYSeries(lbClass.getDescription());
